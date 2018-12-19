@@ -2,7 +2,6 @@
 using namespace std;
 
 typedef struct {
-	int u;//起点
 	int v;//终点
 	int c;//容量
 	int f;//流
@@ -16,14 +15,14 @@ ifstream infile;
 
 bool bfs();
 
-void debug() {
-	for (int i = 0; i < v; i++) {
-		int l = graph[i].size();
-		for (int j = 0; j < l; j++)
-			cout << graph[i].at(j).u << " + " << graph[i].at(j).v << " + " << graph[i].at(j).f << " + " << graph[i].at(j).c << endl;
-	}
-
-}
+//void debug() {
+//	for (int i = 0; i < v; i++) {
+//		int l = graph[i].size();
+//		for (int j = 0; j < l; j++)
+//			cout << graph[i].at(j).u << " + " << graph[i].at(j).v << " + " << graph[i].at(j).f << " + " << graph[i].at(j).c << endl;
+//	}
+//
+//}
 
 bool bfs() {
 	int i;
@@ -85,6 +84,7 @@ vector<edge>::iterator findx(vector<edge> &ut, int vt) {
 
 int main() {
 	infile.open("C:\\Users\\叶学谦\\Desktop\\算法\\roadNet-CA.txt");
+	//infile.open("C:\\Users\\叶学谦\\Desktop\\算法\\123.txt");
 	infile >> v >> e;
 	cout << "point:" << v << endl;
 	cout << "edge:" << e << endl;
@@ -97,7 +97,7 @@ int main() {
 	graph = new vector<edge>[v];
 	edge *edges = new edge[e];
 	int i;
-	srand((int)time(0));
+	//srand((int)time(0));
 	for (i = 0; i < e; i++) {
 		edges[i].f = 0;
 		edges[i].c = 0;
@@ -108,9 +108,14 @@ int main() {
 		edges[i].u = u1-1;
 		edges[i].v = v1-1;
 		edges[i].c += c1;*/
-		infile >> edges[i].u >> edges[i].v;
-		edges[i].c = 50;
-		graph[edges[i].u].push_back(edges[i]);
+		int ut;
+		infile >> ut >> edges[i].v >> edges[i].c;
+		//edges[i].c = rand();
+		vector<edge>::iterator it = findx(graph[ut], edges[i].v);
+		if (it != graph[ut].end())
+			it->c += edges[i].c;
+		else
+			graph[ut].push_back(edges[i]);
 	}
 	LARGE_INTEGER s, e, fre;
 	QueryPerformanceFrequency(&fre);
@@ -135,7 +140,6 @@ int main() {
 			it2 = findx(graph[vt], ut);
 			if (it2 == graph[vt].end()) {
 				edge nedge;
-				nedge.u = vt;
 				nedge.v = ut;
 				nedge.c = it1->c;
 				nedge.f = it1->c;
@@ -159,9 +163,9 @@ int main() {
 		}
 		path.clear();
 		result += min;
-		//cout << min << endl;
+		cout << min << endl;
 	}
-	cout << result << endl;
+	cout << "最大流：" << result << endl;
 	QueryPerformanceCounter(&e);
 	cout << "time:" << (double)(e.QuadPart - s.QuadPart) * 1000 / fre.QuadPart << "ms" << endl;
 	/*	cout << "Case "<<shit<<": " << result << endl;
