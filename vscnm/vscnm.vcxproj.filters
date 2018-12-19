@@ -26,5 +26,8 @@
     <ClCompile Include="vscnm.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="maxflow.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
